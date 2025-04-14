@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base target="_top">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width: 100%, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>G2Dock</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            position: fixed;
+            top: 135px;
+            right: 20px;
+            z-index: 1000;
+            display: none;
+        }
+        .header.show {
+            display: block;
+        }
+        .logout-button {
+            padding: 10px 20px;
+            background: none;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-family: 'Prompt', sans-serif;
+            font-size: 20px;
+        }
+        .iframe-container {
+            flex: 1;
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <button class="logout-button" onclick="logout()">ออกจากระบบ</button>
+    </div>
+    <div class="iframe-container">
+        <iframe scrolling="yes" 
+                src="https://script.google.com/macros/s/AKfycbzT3H3PP7ljD1PiUobjhekbFUenmrZ1niYiX09UUiGuSoHdr82Odo3Pv0kYF5sUan1JqA/exec" 
+                allow="camera" 
+                frameborder="0"
+                id="myIframe"></iframe>
+    </div>
+    <script>
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                const header = document.querySelector('.header');
+                header.classList.add('show');
+            }, 60000);
+        });
+        async function logout() {
+            const result = await Swal.fire({
+                title: 'ออกจากระบบ',
+                text: 'คุณต้องการออกจากระบบใช่หรือไม่?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'ใช่',
+                cancelButtonText: 'ยกเลิก'
+            });
+            if (result.isConfirmed) {
+                localStorage.removeItem('currentUser');
+                await Swal.fire({
+                    title: 'ออกจากระบบสำเร็จ',
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+                location.reload();
+            }
+        }
+    </script>
+</body>
+</html>
